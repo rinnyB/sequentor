@@ -1,5 +1,6 @@
 from itertools import chain
 from functools import reduce as freduce
+
 class FList(list):
     def __init__(self, *arr):
 
@@ -30,6 +31,12 @@ class FList(list):
 
     def reduce(self, func):
         return freduce(func, self)
+
+    def reduceByKey(self):
+        kv = {}
+        for elem in self:
+            kv[elem[0]] = kv.get(elem[0],0) + 1
+        return FList(kv.items())
 
     '''Output'''
     def foreach(self, func):
@@ -71,3 +78,10 @@ class FList(list):
     @property
     def toSet(self):
         return set(self)
+
+
+    def __str__(self):
+        return str(list(self))
+
+    def __repr__(self):
+        return "FList("  + str(list(self))  + ")"

@@ -10,7 +10,8 @@ class sequentor():
 
     def evaluate(self):
         for elem in self.actions:
-            self.state = eval( str( self.state ) + elem)
+            self.state = eval( repr( self.state ) + elem)
+
         if isinstance(self.state, list):
             return FList(self.state)
         else:
