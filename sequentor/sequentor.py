@@ -1,4 +1,4 @@
-from Sequentor.func_list import func_list
+from Sequentor.flist import FList
 class sequentor():
     def __init__(self, state):
         self.state = state
@@ -10,12 +10,12 @@ class sequentor():
 
     def evaluate(self):
         for elem in self.actions:
-            self.state = eval( str(self.state) + elem)
+            self.state = eval( str( self.state ) + elem)
         if isinstance(self.state, list):
-            return func_list(self.state)
+            return FList(self.state)
         else:
             return self.state
-            
+
     def show_graph(self):
         s = ""
         for i in range(len(self.actions)):

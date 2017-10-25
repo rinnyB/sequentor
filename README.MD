@@ -4,7 +4,6 @@ Simple module to allow 'lazy-like' sequential operations.
 
 Also contains lists in functional-like manner.
 
-The code is terribly buggy and work-aroundish, especially for cases with type conversions.
 
 
 ## Examples
@@ -33,25 +32,25 @@ print(my_seq.evaluate())
 * Lazy List example
 
 ``` python
-from Sequentor.func_list import func_list as llist
+from Sequentor.flist import FList
 
-my_lst = llist([7,8])
+my_lst = FList([7,8])
 
 l = my_lst\
 .map(lambda x: x + 2)\
-.flatMap(lambda x: list(range(0,x)))\
+.flatMap(lambda x: list(range(0, x)))\
 .filter(lambda x: x < 8)
 
 print(l)
 
-func_list([0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7])
+FList([0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7])
 ```
 
 * Combination example (word-count :tada:)
 
 ```python
 from Sequentor.sequentor import sequentor as sq
-from Sequentor.func_list import func_list as llist
+from Sequentor.FList import FList
 
 txt = '\
 This is just a simple Simple text about simple \
@@ -60,7 +59,7 @@ well \
 maybe it is not that much simple \
 but still relatively simple'
 
-counter = sq(llist([txt]))
+counter = sq(FList([txt]))
 
 counter.add_action(".flatMap(lambda x:x.split())")\
 .add_action(".map(lambda x: x.lower())")\
