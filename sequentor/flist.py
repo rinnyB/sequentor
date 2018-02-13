@@ -1,4 +1,4 @@
-from itertools import chain
+from itertools import chain, groupby
 from functools import reduce as freduce
 
 class FList(list):
@@ -11,32 +11,64 @@ class FList(list):
                 super().__init__(arr)
         else:
             super().__init__(arr)
+        self.isSorted = False
 
     '''Transformations'''
+
 
     def map(self, func):
         try:
             return FList(map(func, self))
-        except:
-            print("Function is not applicable")
+        except Exception as e:
+            print("MapError: Function is not applicable: {}".format(e))
+
 
     def filter(self, func):
         try:
             return FList(filter(func, self))
-        except:
-            print("Function is not applicable")
+        except Exception as e:
+            print("FilterError: Function is not applicable: {}".format(e))
+
 
     def flatMap(self, func):
-        return FList(chain.from_iterable(map(func, self)))
+        try:
+            return FList(chain.from_iterable(map(func, self)))
+        except Exception as e:
+            print("FlatMapError: function is not applicable: {}".format(e))
+
 
     def reduce(self, func):
-        return freduce(func, self)
+        try:
+            return freduce(func, self)
+        except Exception as e:
+            print("Reduce error: {}".format(e))
 
-    def reduceByKey(self):
-        kv = {}
-        for elem in self:
-            kv[elem[0]] = kv.get(elem[0],0) + 1
-        return FList(kv.items())
+
+    def sortBy(self, func):
+        if not self.isSorted:
+            try:
+                self.sort(key = func)
+                self.isSorted = True
+            except Exception as e:
+                print("Sorting error: {}".format(e))
+        return self
+
+
+    def groupBy(self, func):
+        if not self.isSorted:
+            self.sortBy(func)
+        try:
+            return FList([(k, FList(g).map(lambda x: x[1])) for k, g in groupby(self, func)])
+        except Exception as e:
+            print("GroupBy error: {}".format(e))
+
+
+    def reduceByKey(self, func):
+        try:
+            return FList((key, freduce(func, group)) for key, group in self)
+        except Exception as e:
+            print("ReduceByKey error: {}".format(e))
+
 
     '''Output'''
     def foreach(self, func):
@@ -44,7 +76,8 @@ class FList(list):
             for elem in self:
                 func(elem)
         except Exception as e:
-            print("Function is not applicable")
+            print("Function is not applicable: {}".format(e))
+
 
     '''Properties'''
     @property
