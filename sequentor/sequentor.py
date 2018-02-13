@@ -1,10 +1,10 @@
-from Sequentor.flist import FList
+from sequentor.flist import FList
 class sequentor():
     def __init__(self, state):
         self.state = state
         self.actions = []
 
-    def add_action(self,action):
+    def add_action(self, action):
         self.actions.append(action)
         return self
 
