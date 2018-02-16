@@ -47,21 +47,21 @@ class FList(list):
     def sortBy(self, func):
         if not self.isSorted:
             try:
-                self.sort(key = func)
                 self.isSorted = True
-                return self
+                self.sort(key = func)
             except Exception as e:
                 raise Exception("SortByError") from e
+        return self
 
 
-    def sort(self):
+    def sorted(self):
         if not self.isSorted:
             try:
-                self.sort()
                 self.isSorted = True
-                return self
+                self.sort()
             except Exception as e:
                 raise Exception("SortError") from e
+        return self
 
 
     def groupBy(self, func):
