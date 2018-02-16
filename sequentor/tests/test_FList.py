@@ -49,3 +49,19 @@ def testFlatMap(data, function, expectedData):
 ])
 def testReduce(data, function, expectedData):
     assert FList(data).reduce(function) == expectedData
+
+
+@pytest.mark.parametrize('data, function, expectedData',
+[
+    ([{'name': 'jack','id' : 1}, {'id': 2, 'name' : 'rinnyB'}, {'name' : 'joe', 'id' :  0}],
+    lambda x: x['id'],
+    [{'name' : 'joe', 'id' : 0}, {'name': 'jack','id' : 1},  {'id': 2, 'name' : 'rinnyB'}]),
+    ([-2,5,4,112, 0, -22, 11], lambda x: x, [-22, -2, 0, 4, 5, 11, 112])
+
+])
+def testSortBy(data, function, expectedData):
+    _test = FList(data)
+    assert _test.isSorted == False
+    _transformed = _test.sortBy(function)
+    assert _transformed.isSorted == True
+    assert _transformed == expectedData
