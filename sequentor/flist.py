@@ -20,28 +20,28 @@ class FList(list):
         try:
             return FList(map(func, self))
         except Exception as e:
-            print("MapError: Function is not applicable: {}".format(e))
+            raise Exception("MapError: Function is not applicable") from e
 
 
     def filter(self, func):
         try:
             return FList(filter(func, self))
         except Exception as e:
-            print("FilterError: Function is not applicable: {}".format(e))
+            raise Exception("FilterError: Function is not applicable") from e
 
 
     def flatMap(self, func):
         try:
             return FList(chain.from_iterable(map(func, self)))
         except Exception as e:
-            print("FlatMapError: function is not applicable: {}".format(e))
+            raise Exception("FlatMapError: function is not applicable") from e
 
 
     def reduce(self, func):
         try:
             return freduce(func, self)
         except Exception as e:
-            print("Reduce error: {}".format(e))
+            raise Exception("ReduceError") from e
 
 
     def sortBy(self, func):
@@ -49,18 +49,19 @@ class FList(list):
             try:
                 self.sort(key = func)
                 self.isSorted = True
+                return self
             except Exception as e:
-                print("SortingBy error: {}".format(e))
-        return self
+                raise Exception("SortByError") from e
+
 
     def sort(self):
         if not self.isSorted:
             try:
                 self.sort()
                 self.isSorted = True
+                return self
             except Exception as e:
-                print("Sorting error: {}".format(e))
-        return self
+                raise Exception("SortError") from e
 
 
     def groupBy(self, func):
@@ -69,15 +70,26 @@ class FList(list):
         try:
             return FList([(k, FList(g).map(lambda x: x[1])) for k, g in groupby(self, func)])
         except Exception as e:
-            print("GroupBy error: {}".format(e))
+            raise Exception("GroupByError") from e
 
 
     def reduceByKey(self, func):
         try:
             return FList((key, freduce(func, group)) for key, group in self)
         except Exception as e:
-            print("ReduceByKey error: {}".format(e))
+            raise Exception("ReduceByKeyError") from e
 
+    def maxBy(self, func):
+        try:
+            return max(self, key = func)
+        except Exception as e:
+            raise Exception("MaxByError") from e
+
+    def argMaxBy(self, func):
+        try:
+            return self.index(self.maxBy(func))
+        except Exception as e:
+            raise Exception("ArgMaxByError") from e
 
     '''Output'''
     def foreach(self, func):
@@ -85,7 +97,7 @@ class FList(list):
             for elem in self:
                 func(elem)
         except Exception as e:
-            print("Function is not applicable: {}".format(e))
+            raise Exception("ForeachError: funcion is not applicable") from e
 
 
     '''Properties'''
@@ -120,6 +132,41 @@ class FList(list):
     @property
     def toSet(self):
         return set(self)
+
+    @property
+    def max(self):
+        try:
+            return max(self)
+        except Exception as e:
+            raise Exception("MaxError") from e
+
+    @property
+    def min(self):
+        try:
+            return min(self)
+        except Exception as e:
+            raise Exception("MinError") from e
+
+    @property
+    def avg(self):
+        try:
+            return self.sum / self.size
+        except Exception as e:
+            raise Exception("AvgError") from e
+
+    @property
+    def mean(self):
+        try:
+            return self[ int(self.size / 2) ]
+        except Exception as e:
+            raise Exception("MeanError") from e
+
+    @property
+    def argMax(self):
+        try:
+            return self.argMaxBy(lambda x: x)
+        except Exception as e:
+            raise Exception("ArgMaxError") from e
 
 
     def __str__(self):
