@@ -78,16 +78,56 @@ def testSortBy(data, function, expectedData):
     assert _transformed == expectedData
 
 
+def testSum(lst):
+    assert lst.sum == sum(lst)
+
+def testCount(lst):
+    assert lst.count == len(lst)
+
+def testSize(lst):
+    assert lst.size == len(lst)
+
+def testLength(lst):
+    assert lst.length == len(lst)
+
+def testHead(lst):
+    assert lst.head == 0
+
+def testTail(lst):
+    assert lst.tail == lst[1:]
+
+def testToList(lst):
+    _test = lst.toList
+    assert isinstance(lst, FList)
+    assert isinstance(_test, list)
+    assert _test == lst
+
+def testToSet(lst):
+    _test = lst.toSet
+    assert isinstance(lst, FList)
+    assert isinstance(_test, set)
+    assert _test == set(lst)
+
+def testMax(lst):
+    assert lst.max == max(lst)
+def testMaxRaises():
+    try:
+        FList().max
+    except Exception as e:
+        assert str(e) == "MaxError"
 
 def testMin(lst):
     assert lst.min == 0
+def testMinRaises():
+    try:
+        FList().min
+    except Exception as e:
+        assert str(e) == "MinError"
 
-def testMax(lst):
-    assert lst.max == 499999
 
 def testAvg(lst):
-    assert lst.avg == sum(lst) / len (lst)
+    assert lst.avg == (sum(lst) / len(lst))
 
 def testMean(lst, strlst):
-    assert lst.mean == 500000/2
+    assert lst.mean == lst[int(len(lst)/2)]
     assert strlst.mean == 'little'
