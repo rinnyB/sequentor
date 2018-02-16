@@ -50,6 +50,15 @@ class FList(list):
                 self.sort(key = func)
                 self.isSorted = True
             except Exception as e:
+                print("SortingBy error: {}".format(e))
+        return self
+
+    def sort(self):
+        if not self.isSorted:
+            try:
+                self.sort()
+                self.isSorted = True
+            except Exception as e:
                 print("Sorting error: {}".format(e))
         return self
 
