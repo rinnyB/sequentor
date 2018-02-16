@@ -21,6 +21,12 @@ def testFList(data):
 def testMap(data, function, expectedData):
     assert FList(data).map(function) == expectedData
 
+def testMapRaises():
+    try:
+        FList(1, 2, 3).map(lambda x: x.upper())
+    except Exception as e:
+        assert str(e) == "MapError: Function is not applicable"
+
 
 @pytest.mark.parametrize('data, function, expectedData',
 [
@@ -30,6 +36,11 @@ def testMap(data, function, expectedData):
 def testFilter(data, function, expectedData):
     FList(data).filter(function) == expectedData
 
+def testFilterRaises():
+    try:
+        FList(1, 2, 3).filter(lambda x: len(x) > 5)
+    except Exception as e:
+        assert str(e) == "FilterError: Function is not applicable"
 
 @pytest.mark.parametrize('data, function, expectedData',
 [
@@ -65,3 +76,18 @@ def testSortBy(data, function, expectedData):
     _transformed = _test.sortBy(function)
     assert _transformed.isSorted == True
     assert _transformed == expectedData
+
+
+
+def testMin(lst):
+    assert lst.min == 0
+
+def testMax(lst):
+    assert lst.max == 499999
+
+def testAvg(lst):
+    assert lst.avg == sum(lst) / len (lst)
+
+def testMean(lst, strlst):
+    assert lst.mean == 500000/2
+    assert strlst.mean == 'little'
