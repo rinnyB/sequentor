@@ -1,4 +1,4 @@
-from sequentor.flist_errors import MapError
+from sequentor.flist_errors import MapError, FilterError
 
 
 class FList(list):
@@ -29,5 +29,10 @@ class FList(list):
         try:
             return FList(map(func, self))
         except Exception as e:
-            print(e)
             raise MapError() from e
+
+    def filter(self, func):
+        try:
+            return FList(filter(func, self))
+        except Exception as e:
+            raise FilterError() from e

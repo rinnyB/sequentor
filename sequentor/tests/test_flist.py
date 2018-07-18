@@ -1,7 +1,7 @@
 # ignore E731
 import pytest
 from sequentor.flist import FList
-from sequentor.flist_errors import MapError
+from sequentor.flist_errors import MapError, FilterError
 
 """
 Test that FList is initialized successfully
@@ -53,3 +53,18 @@ class Test_FListMap:
         func = lambda x: x.lower()
         with pytest.raises(MapError):
             FList(data).map(func)
+
+
+class Test_FListFilter:
+    def test_FList_filter(self):
+        data = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        awaited = [1, 3, 5, 7, 9]
+        func = lambda x: x % 2 == 1
+        assert(FList(data).filter(func) == awaited)
+
+    def test_FList_filter_raise_exception(self):
+        data = ["this", "is", "a", "list"]
+        # use inappropriate function
+        func = lambda x: float(x)
+        with pytest.raises(FilterError):
+            FList(data).filter(func)
