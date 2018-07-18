@@ -1,8 +1,0 @@
-{
-  "sequentor/tests/test_flist.py::test_FList_init[1]": true,
-  "sequentor/tests/test_flist.py::test_FList_init[2]": true,
-  "sequentor/tests/test_flist.py::test_FList_init[3]": true,
-  "sequentor/tests/test_flist.py::test_FList_init[4]": true,
-  "sequentor/tests/test_flist.py::test_FList_init[5]": true,
-  "sequentor/tests/test_flist.py::test_FList_init[data0]": true
-}
