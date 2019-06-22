@@ -1,7 +1,22 @@
-
-class MapError(Exception):
+class FListError(Exception):
     pass
 
 
-class FilterError(Exception):
+class MapError(FListError):
+    pass
+
+
+class FilterError(FListError):
+    pass
+
+
+class FlattenError(FListError):
+    pass
+
+
+class FlatMapError(FListError):
+    pass
+
+
+class SortError(FListError):
     pass
