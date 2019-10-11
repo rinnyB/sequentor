@@ -20,3 +20,11 @@ class FlatMapError(FListError):
 
 class SortError(FListError):
     pass
+
+
+class HeadError(FListError):
+    pass
+
+
+class TailError(FListError):
+    pass

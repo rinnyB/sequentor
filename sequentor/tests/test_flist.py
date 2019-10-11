@@ -1,4 +1,5 @@
 # ignore E731
+from collections import namedtuple
 import pytest
 from sequentor.flist import FList
 from sequentor.flist_errors import (
@@ -115,7 +116,7 @@ class Test_FList_sorting:
         assert FList(data).sortBy(func) ==\
             [{"a": -155, "b": 1}, {"a": 1, "b": 2}]
 
-    def test_FList_sortBy(self):
+    def test_FList_sortBy_2(self):
         data = [{"a": 1, "b": 2}, {"a": -155, "b": 1}]
         func = lambda x: -x['a']
         assert FList(data).sortBy(func) == data
@@ -125,3 +126,30 @@ class Test_FList_sorting:
         func = lambda x: x
         with pytest.raises(SortError):
             FList(data).sortBy(func)
+
+
+class Test_FListGroupBy:
+    def test_FList_groupBy(self):
+        # group by first two letters
+        data = ['cat', 'tac', 'dog', 'god', 'godeatgod', 'category', 'cats']
+        awaited = {
+            'ca': ['cat', 'category', 'cats'],
+            'ta': ['tac'],
+            'do': ['dog'],
+            'go': ['god', 'godeatgod']
+        }
+        assert FList(data).groupBy(lambda x: x[0:2]) == awaited
+
+    def test_FList_groupBy_complex_elements(self):
+        point = namedtuple("point", ['x', 'y'])
+        points = [
+            point(1, 1), point(1, 2), point(1, 3),
+            point(2, 1), point(2, 21),
+            point(3, 4), point(3, 5)
+        ]
+
+        assert FList(points).groupBy(lambda p: p.x) == {
+            1: [point(1, 1), point(1, 2), point(1, 3),],
+            2: [point(2, 1), point(2, 21),],
+            3: [point(3, 4), point(3, 5),]
+        }

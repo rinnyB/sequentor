@@ -4,7 +4,8 @@ from functools import reduce as freduce
 from sequentor.flist_errors import (
     FListError,
     MapError, FilterError, FlatMapError,
-    FlattenError, SortError)
+    FlattenError, SortError,
+    HeadError, TailError)
 
 
 class FList(list):
@@ -73,4 +74,44 @@ class FList(list):
     def sort(self):
         raise FListError("No 'sort' method.")
 
-    
+    def groupBy(self, func):
+        res = {}
+        for elem in self:
+            k = func(elem)
+            res[k] = res.get(k, []) + [elem]
+        return res
+
+    '''Properties'''
+    @property
+    def head(self):
+        try:
+            return self[0]
+        except Exception as e:
+            raise HeadError() from e
+
+    @property
+    def tail(self):
+        try:
+            return self[1:]
+        except Exception as e:
+            raise TailError() from e
+
+    @property
+    def count(self):
+        return len(self)
+
+    @property
+    def size(self):
+        return self.count
+
+    @property
+    def length(self):
+        return self.count
+
+    @property
+    def toList(self):
+        return list(self)
+
+    @property
+    def toSet(self):
+        return set(self)
