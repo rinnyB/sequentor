@@ -5,14 +5,14 @@ from sequentor.flist import FList
 from sequentor.flist_errors import (
     MapError, FilterError, FlatMapError,
     FlattenError, SortError)
-"""
-Test that FList is initialized successfully
-for different input types: a single list
-and a various arguments list
-"""
 
 
 class Test_FlistInit:
+    """
+    Test that FList is initialized successfully
+    for different input types: a single list
+    and a various arguments list
+    """
     def test_FList_init_list(self):
         data = [1, 2, 3, 4, 5]
         assert FList(data) == data
@@ -160,12 +160,12 @@ class Test_FListGroupBy:
         assert FList(data).zip(other_data) ==\
             [('one', 1), ('two', 2), ('three', 3)]
 
-    def test_zip_minimal_length_used(self):
+    def test_FList_zip_minimal_length_used(self):
         data = ['one', 'two', 'three']
         other_data = [1, 2]
         assert FList(data).zip(other_data) == [('one', 1), ('two', 2)]
 
-    def test_zip_minimal_length_used_2(self):
+    def test_FList_zip_minimal_length_used_2(self):
         data = ['one']
         other_data = [1, 2, 3]
         assert FList(data).zip(other_data) == [('one', 1)]
