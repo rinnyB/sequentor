@@ -129,6 +129,7 @@ class Test_FList_sorting:
 
 
 class Test_FListGroupBy:
+
     def test_FList_groupBy(self):
         # group by first two letters
         data = ['cat', 'tac', 'dog', 'god', 'godeatgod', 'category', 'cats']
@@ -139,6 +140,14 @@ class Test_FListGroupBy:
             'go': ['god', 'godeatgod']
         }
         assert FList(data).groupBy(lambda x: x[0:2]) == awaited
+
+    def test_FList_groupBy_2(self):
+        data = [(1, 2), (3, 2), (4, 2), (4, 1), (5, 1)]
+        awaited = {
+            2: [(1, 2), (3, 2), (4, 2)],
+            1: [(4, 1), (5, 1)]
+        }
+        assert FList(data).groupBy(lambda x: x[1]) == awaited
 
     def test_FList_groupBy_complex_elements(self):
         point = namedtuple("point", ['x', 'y'])
@@ -154,7 +163,7 @@ class Test_FListGroupBy:
             3: [point(3, 4), point(3, 5)]
         }
 
-    def test_zip(self):
+    def test_FList_zip(self):
         data = ['one', 'two', 'three']
         other_data = [1, 2, 3]
         assert FList(data).zip(other_data) ==\
