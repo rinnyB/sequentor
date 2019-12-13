@@ -6,6 +6,7 @@ from sequentor.flist_errors import (
     MapError, FilterError, FlatMapError,
     FlattenError, SortError,
     HeadError, TailError)
+from sequentor.helpers import require
 
 
 class FList(list):
@@ -28,6 +29,11 @@ class FList(list):
             if len(arr) == 1:
                 if isinstance(arr[0], (map, filter, list, tuple, chain)):
                     super().__init__(arr[0])
+                else:
+                    try:  # case for single element
+                        super().__init__(arr)
+                    except Exception as e:
+                        raise FListError() from e
             else:
                 super().__init__(arr)
         self.isSorted = isSorted
@@ -80,6 +86,10 @@ class FList(list):
             k = func(elem)
             res[k] = res.get(k, []) + [elem]
         return res
+
+    def zip(self, other):
+        size = min(self.size, len(other))
+        return FList([(self[i], other[i]) for i in range(0, size)])
 
     '''Properties'''
     @property
