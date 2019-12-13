@@ -149,14 +149,28 @@ class Test_FListGroupBy:
         ]
 
         assert FList(points).groupBy(lambda p: p.x) == {
-            1: [point(1, 1), point(1, 2), point(1, 3),],
-            2: [point(2, 1), point(2, 21),],
-            3: [point(3, 4), point(3, 5),]
+            1: [point(1, 1), point(1, 2), point(1, 3)],
+            2: [point(2, 1), point(2, 21)],
+            3: [point(3, 4), point(3, 5)]
         }
 
     def test_zip(self):
         data = ['one', 'two', 'three']
         other_data = [1, 2, 3]
-        assert FList(data).zip(other_data) == [('one', 1), ('two', 2), ('three', 3)]
+        assert FList(data).zip(other_data) ==\
+            [('one', 1), ('two', 2), ('three', 3)]
+    
+    def test_zip_minimal_length_used(self):
+        data = ['one', 'two', 'three']
+        other_data = [1, 2]
+        assert FList(data).zip(other_data) == [('one', 1), ('two', 2)]
+
+    def test_zip_minimal_length_used_2(self):
+        data = ['one']
+        other_data = [1, 2, 3]
+        assert FList(data).zip(other_data) == [('one', 1)]
+
+        
+
 
         
