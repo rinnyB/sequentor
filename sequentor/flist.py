@@ -93,7 +93,7 @@ class FList(list):
 
     def reduce(self, func):
         raise NotImplementedError
-    
+
     '''Properties'''
     @property
     def head(self):
