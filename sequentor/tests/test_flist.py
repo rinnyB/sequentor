@@ -32,13 +32,13 @@ class Test_FlistInit:
     def test_FList_init_from_map(self):
         data = [1, 2, 3, 4, 5]
         awaited = [2, 3, 4, 5, 6]
-        func = lambda x: x + 1
+        def func(x): return x + 1
         assert(FList(map(func, data)) == awaited)
 
     def test_FList_init_from_filter(self):
         data = [1, 2, 3, 4, 5]
         awaited = [1, 2]
-        func = lambda x: x < 3
+        def func(x): return x < 3
         assert(FList(filter(func, data)) == awaited)
 
 
@@ -46,13 +46,13 @@ class Test_FListMap:
     def test_FList_map(self):
         data = [1, 2, 3, 4, 5]
         awaited = [0.5, 1, 1.5, 2, 2.5]
-        func = lambda x: x / 2
+        def func(x): return x / 2
         assert (FList(data).map(func) == awaited)
 
     def test_FList_map_raise_exception(self):
         data = [1, 2, 3, 4, 5]
         # use inappropriate function
-        func = lambda x: x.lower()
+        def func(x): return x.lower()
         with pytest.raises(MapError):
             FList(data).map(func)
 
@@ -61,13 +61,13 @@ class Test_FListFilter:
     def test_FList_filter(self):
         data = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         awaited = [1, 3, 5, 7, 9]
-        func = lambda x: x % 2 == 1
+        def func(x): return x % 2 == 1
         assert(FList(data).filter(func) == awaited)
 
     def test_FList_filter_raise_exception(self):
         data = ["this", "is", "a", "list"]
         # use inappropriate function
-        func = lambda x: float(x)
+        def func(x): return float(x)
         with pytest.raises(FilterError):
             FList(data).filter(func)
 
@@ -89,12 +89,12 @@ class Test_FListFlatMap:
     def test_FList_flatMap(self):
         data = [1, 2, 3]
         awaited = [0, 0, 1, 0, 1, 2]
-        func = lambda x: range(0, x)
+        def func(x): return range(0, x)
         assert FList(data).flatMap(func) == awaited
 
     def test_FList_flatMap_raise_exception(self):
         data = [1, 2, 3]
-        func = lambda x: x.lower()
+        def func(x): return x.lower()
         # use inappropriate function
         with pytest.raises(FlatMapError):
             FList(data).flatMap(func)
@@ -112,18 +112,18 @@ class Test_FList_sorting:
 
     def test_FList_sortBy(self):
         data = [{"a": 1, "b": 2}, {"a": -155, "b": 1}]
-        func = lambda x: x['a']
+        def func(x): return x['a']
         assert FList(data).sortBy(func) ==\
             [{"a": -155, "b": 1}, {"a": 1, "b": 2}]
 
     def test_FList_sortBy_2(self):
         data = [{"a": 1, "b": 2}, {"a": -155, "b": 1}]
-        func = lambda x: -x['a']
+        def func(x): return -x['a']
         assert FList(data).sortBy(func) == data
 
     def test_FList_sortBy_raises_exception(self):
         data = [{"a": 1, "b": 2}, {"a": -155, "b": 1}]
-        func = lambda x: x
+        def func(x): return x
         with pytest.raises(SortError):
             FList(data).sortBy(func)
 
@@ -159,7 +159,7 @@ class Test_FListGroupBy:
         other_data = [1, 2, 3]
         assert FList(data).zip(other_data) ==\
             [('one', 1), ('two', 2), ('three', 3)]
-    
+
     def test_zip_minimal_length_used(self):
         data = ['one', 'two', 'three']
         other_data = [1, 2]
@@ -169,8 +169,3 @@ class Test_FListGroupBy:
         data = ['one']
         other_data = [1, 2, 3]
         assert FList(data).zip(other_data) == [('one', 1)]
-
-        
-
-
-        
