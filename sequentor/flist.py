@@ -91,6 +91,9 @@ class FList(list):
         size = min(self.size, len(other))
         return FList([(self[i], other[i]) for i in range(0, size)])
 
+    def reduce(self, func):
+        raise NotImplementedError
+    
     '''Properties'''
     @property
     def head(self):
