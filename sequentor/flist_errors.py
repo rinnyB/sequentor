@@ -28,3 +28,9 @@ class HeadError(FListError):
 
 class TailError(FListError):
     pass
+
+class InitError(FListError):
+    pass
+
+class LastError(FListError):
+    pass

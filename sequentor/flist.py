@@ -5,7 +5,8 @@ from sequentor.flist_errors import (
     FListError,
     MapError, FilterError, FlatMapError,
     FlattenError, SortError,
-    HeadError, TailError)
+    HeadError, TailError,
+    InitError, LastError)
 from sequentor.helpers import require
 
 
@@ -91,6 +92,7 @@ class FList(list):
         size = min(self.size, len(other))
         return FList([(self[i], other[i]) for i in range(0, size)])
 
+    # parameterless
     @property
     def zipWithIndex(self):
         idx = range(0, self.size)
@@ -113,6 +115,20 @@ class FList(list):
             return self[1:]
         except Exception as e:
             raise TailError() from e
+
+    @property
+    def init(self):
+        try:
+            return self[:-1]
+        except Exception as e:
+            raise InitError() from e
+
+    @property
+    def last(self):
+        try:
+            return self[-1]
+        except Exception as e:
+            raise LastError() from e
 
     @property
     def count(self):
