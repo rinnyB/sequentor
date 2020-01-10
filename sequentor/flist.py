@@ -91,6 +91,11 @@ class FList(list):
         size = min(self.size, len(other))
         return FList([(self[i], other[i]) for i in range(0, size)])
 
+    @property
+    def zipWithIndex(self):
+        idx = range(0, self.size)
+        return self.zip(idx)
+
     def reduce(self, func):
         raise NotImplementedError
 
