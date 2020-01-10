@@ -1,4 +1,3 @@
-# ignore E731
 from collections import namedtuple
 import pytest
 from sequentor.flist import FList
@@ -162,6 +161,9 @@ class Test_FListGroupBy:
             2: [point(2, 1), point(2, 21)],
             3: [point(3, 4), point(3, 5)]
         }
+
+class Test_FListZip:
+
 
     def test_FList_zip(self):
         data = ['one', 'two', 'three']

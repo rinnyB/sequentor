@@ -111,17 +111,17 @@ class FList(list):
 
     @property
     def tail(self):
-        try:
+        if self.nonEmpty:
             return self[1:]
-        except Exception as e:
-            raise TailError() from e
+        else:
+            raise TailError()
 
     @property
     def init(self):
-        try:
+        if self.nonEmpty:
             return self[:-1]
-        except Exception as e:
-            raise InitError() from e
+        else:
+            raise InitError()
 
     @property
     def last(self):
@@ -141,6 +141,14 @@ class FList(list):
     @property
     def length(self):
         return self.count
+
+    @property
+    def nonEmpty(self):
+        return len(self) > 0
+
+    @property
+    def isEmpty(self):
+        return not self.nonEmpty
 
     @property
     def toList(self):
