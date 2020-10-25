@@ -82,6 +82,7 @@ class FList(list):
         raise FListError("No 'sort' method.")
 
     def groupBy(self, func):
+        """Group elements of FList by func as a key."""
         res = {}
         for elem in self:
             k = func(elem)
@@ -89,11 +90,45 @@ class FList(list):
         return res
 
     def zip(self, other):
+        """Combines each element of FList with elements of other collection."""
         size = min(self.size, len(other))
         return FList([(self[i], other[i]) for i in range(0, size)])
 
     def zipWithIndex(self):
+        """Combines each element of FList with its indexes"""
         return FList([(self[i], i) for i in range(0, self.size)])
+
+    def exists(self, func):
+        """Checks if FList has at least one element that satisfies func."""
+        if self.size == 0:
+            return False
+        for item in self:
+            if func(item):
+                return True
+        return False
+
+    def find(self, func):
+        """Finds first element in FList that satisfies func."""
+        if self.size == 0:
+            return None
+        for item in self:
+            if func(item):
+                return item
+        return None
+
+    def distinctBy(self, func):
+        """Removes all duplicates from FList."""
+        elements_present = set()
+        new_coll = FList()
+        for item in self:
+            identifier = func(item)
+            if identifier in elements_present:
+                pass
+            else:
+                elements_present.add(identifier)
+                new_coll.append(item)
+        return new_coll
+
 
     def reduce(self, func):
         raise NotImplementedError
@@ -154,3 +189,8 @@ class FList(list):
     @property
     def toSet(self):
         return set(self)
+
+    @property
+    def distinct(self):
+        return self.distinctBy(lambda x: x)
+

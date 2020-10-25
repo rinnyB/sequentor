@@ -30,23 +30,23 @@ class Test_FlistInit:
 
     def test_FList_init_from_map(self):
         data = [1, 2, 3, 4, 5]
-        awaited = [2, 3, 4, 5, 6]
+        expected_result = [2, 3, 4, 5, 6]
         def func(x): return x + 1
-        assert(FList(map(func, data)) == awaited)
+        assert(FList(map(func, data)) == expected_result)
 
     def test_FList_init_from_filter(self):
         data = [1, 2, 3, 4, 5]
-        awaited = [1, 2]
+        expected_result = [1, 2]
         def func(x): return x < 3
-        assert(FList(filter(func, data)) == awaited)
+        assert(FList(filter(func, data)) == expected_result)
 
 
 class Test_FListMap:
     def test_FList_map(self):
         data = [1, 2, 3, 4, 5]
-        awaited = [0.5, 1, 1.5, 2, 2.5]
+        expected_result = [0.5, 1, 1.5, 2, 2.5]
         def func(x): return x / 2
-        assert (FList(data).map(func) == awaited)
+        assert (FList(data).map(func) == expected_result)
 
     def test_FList_map_raise_exception(self):
         data = [1, 2, 3, 4, 5]
@@ -59,9 +59,9 @@ class Test_FListMap:
 class Test_FListFilter:
     def test_FList_filter(self):
         data = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        awaited = [1, 3, 5, 7, 9]
+        expected_result = [1, 3, 5, 7, 9]
         def func(x): return x % 2 == 1
-        assert(FList(data).filter(func) == awaited)
+        assert(FList(data).filter(func) == expected_result)
 
     def test_FList_filter_raise_exception(self):
         data = ["this", "is", "a", "list"]
@@ -74,8 +74,8 @@ class Test_FListFilter:
 class Test_FListFlatten:
     def test_FList_flatten(self):
         data = [[1, 2, 3, 4], [5, 6]]
-        awaited = [1, 2, 3, 4, 5, 6]
-        assert FList(data).flatten() == awaited
+        expected_result = [1, 2, 3, 4, 5, 6]
+        assert FList(data).flatten() == expected_result
 
     def test_FList_flatten_raise_exception(self):
         data = [1, 2, 3]
@@ -87,9 +87,9 @@ class Test_FListFlatten:
 class Test_FListFlatMap:
     def test_FList_flatMap(self):
         data = [1, 2, 3]
-        awaited = [0, 0, 1, 0, 1, 2]
+        expected_result = [0, 0, 1, 0, 1, 2]
         def func(x): return range(0, x)
-        assert FList(data).flatMap(func) == awaited
+        assert FList(data).flatMap(func) == expected_result
 
     def test_FList_flatMap_raise_exception(self):
         data = [1, 2, 3]
@@ -132,21 +132,21 @@ class Test_FListGroupBy:
     def test_FList_groupBy(self):
         # group by first two letters
         data = ['cat', 'tac', 'dog', 'god', 'godeatgod', 'category', 'cats']
-        awaited = {
+        expected_result = {
             'ca': ['cat', 'category', 'cats'],
             'ta': ['tac'],
             'do': ['dog'],
             'go': ['god', 'godeatgod']
         }
-        assert FList(data).groupBy(lambda x: x[0:2]) == awaited
+        assert FList(data).groupBy(lambda x: x[0:2]) == expected_result
 
     def test_FList_groupBy_2(self):
         data = [(1, 2), (3, 2), (4, 2), (4, 1), (5, 1)]
-        awaited = {
+        expected_result = {
             2: [(1, 2), (3, 2), (4, 2)],
             1: [(4, 1), (5, 1)]
         }
-        assert FList(data).groupBy(lambda x: x[1]) == awaited
+        assert FList(data).groupBy(lambda x: x[1]) == expected_result
 
     def test_FList_groupBy_complex_elements(self):
         point = namedtuple("point", ['x', 'y'])
@@ -187,3 +187,51 @@ class Test_FListGroupBy:
     def test_zipWithIndex_empty_FList(self):
         data = []
         assert FList(data).zipWithIndex() == []
+
+
+class Test_FListExists:
+
+    def test_exists(self):
+        data = [1, 2, 3, 4, 5]
+        test_data = FList(data)
+        assert test_data.exists(lambda x: x == 1) is True
+        assert test_data.exists(lambda x: x == 0) is False
+
+    def test_exists_empty_FList(self):
+        assert FList().exists(lambda x: x == 0) is False
+
+
+class Test_find:
+
+    def test_find(self):
+        data = [1, 2, 3, 4, 5]
+        test_data = FList(data)
+        assert test_data.find(lambda x: x == 1) is 1
+        assert test_data.find(lambda x: x == 0) is None
+
+    def test_find_empty(self):
+        assert FList().find(lambda x: x == 0) is None
+
+
+class Test_distinct:
+
+    def test_distinct(self):
+        data = [1, 1, 1, 1, 5, 4, 3, 2, 1]
+        expected_result = [1, 5, 4, 3, 2]
+        assert FList(data).distinct == expected_result
+
+    def test_distinct_empty(self):
+        assert FList().distinct == []
+
+    def test_distinctBy(self):
+        data = [1, 2, 3, 4, 5, 6, 1, 1, 1, 1, 1]
+        expected_result = [1, 2, 3, 4, 5, 6]
+        assert FList(data).distinctBy(lambda x: x) == expected_result
+
+    def test_distinctBy_tuples(self):
+        data = [("one", "cookie"), ("one", "banana"), ("two", "cakes")]
+        expected_result = [("one", "cookie"), ("two", "cakes")]
+        assert FList(data).distinctBy(lambda x: x[0]) == expected_result
+
+
+
