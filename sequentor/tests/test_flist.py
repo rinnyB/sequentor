@@ -162,9 +162,6 @@ class Test_FListGroupBy:
             3: [point(3, 4), point(3, 5)]
         }
 
-class Test_FListZip:
-
-
     def test_FList_zip(self):
         data = ['one', 'two', 'three']
         other_data = [1, 2, 3]
@@ -181,6 +178,12 @@ class Test_FListZip:
         other_data = [1, 2, 3]
         assert FList(data).zip(other_data) == [('one', 1)]
 
-    def test_FList_zipWithIndex(self):
+
+    def test_zipWithIndex(self):
         data = ['one', 'two', 'three']
-        assert FList(data).zipWithIndex == [('one', 0), ('two', 1), ('three', 2)]
+        assert FList(data).zipWithIndex() ==\
+            [('one', 0), ('two', 1), ('three', 2)]
+
+    def test_zipWithIndex_empty_FList(self):
+        data = []
+        assert FList(data).zipWithIndex() == []
