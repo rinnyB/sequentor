@@ -12,6 +12,7 @@ class Test_FlistInit:
     for different input types: a single list
     and a various arguments list
     """
+
     def test_FList_init_list(self):
         data = [1, 2, 3, 4, 5]
         assert FList(data) == data
@@ -26,32 +27,40 @@ class Test_FlistInit:
 
     def test_FList_init_tuple(self):
         data = (1, 2, 3, 4, 5)
-        assert(FList(data) == list(data))
+        assert (FList(data) == list(data))
 
     def test_FList_init_from_map(self):
         data = [1, 2, 3, 4, 5]
         expected_result = [2, 3, 4, 5, 6]
+
         def func(x): return x + 1
-        assert(FList(map(func, data)) == expected_result)
+
+        assert (FList(map(func, data)) == expected_result)
 
     def test_FList_init_from_filter(self):
         data = [1, 2, 3, 4, 5]
         expected_result = [1, 2]
+
         def func(x): return x < 3
-        assert(FList(filter(func, data)) == expected_result)
+
+        assert (FList(filter(func, data)) == expected_result)
 
 
 class Test_FListMap:
     def test_FList_map(self):
         data = [1, 2, 3, 4, 5]
         expected_result = [0.5, 1, 1.5, 2, 2.5]
+
         def func(x): return x / 2
+
         assert (FList(data).map(func) == expected_result)
 
     def test_FList_map_raise_exception(self):
         data = [1, 2, 3, 4, 5]
+
         # use inappropriate function
         def func(x): return x.lower()
+
         with pytest.raises(MapError):
             FList(data).map(func)
 
@@ -60,13 +69,17 @@ class Test_FListFilter:
     def test_FList_filter(self):
         data = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         expected_result = [1, 3, 5, 7, 9]
+
         def func(x): return x % 2 == 1
-        assert(FList(data).filter(func) == expected_result)
+
+        assert (FList(data).filter(func) == expected_result)
 
     def test_FList_filter_raise_exception(self):
         data = ["this", "is", "a", "list"]
+
         # use inappropriate function
         def func(x): return float(x)
+
         with pytest.raises(FilterError):
             FList(data).filter(func)
 
@@ -88,12 +101,16 @@ class Test_FListFlatMap:
     def test_FList_flatMap(self):
         data = [1, 2, 3]
         expected_result = [0, 0, 1, 0, 1, 2]
+
         def func(x): return range(0, x)
+
         assert FList(data).flatMap(func) == expected_result
 
     def test_FList_flatMap_raise_exception(self):
         data = [1, 2, 3]
+
         def func(x): return x.lower()
+
         # use inappropriate function
         with pytest.raises(FlatMapError):
             FList(data).flatMap(func)
@@ -111,18 +128,24 @@ class Test_FList_sorting:
 
     def test_FList_sortBy(self):
         data = [{"a": 1, "b": 2}, {"a": -155, "b": 1}]
+
         def func(x): return x['a']
-        assert FList(data).sortBy(func) ==\
-            [{"a": -155, "b": 1}, {"a": 1, "b": 2}]
+
+        assert FList(data).sortBy(func) == \
+               [{"a": -155, "b": 1}, {"a": 1, "b": 2}]
 
     def test_FList_sortBy_2(self):
         data = [{"a": 1, "b": 2}, {"a": -155, "b": 1}]
+
         def func(x): return -x['a']
+
         assert FList(data).sortBy(func) == data
 
     def test_FList_sortBy_raises_exception(self):
         data = [{"a": 1, "b": 2}, {"a": -155, "b": 1}]
+
         def func(x): return x
+
         with pytest.raises(SortError):
             FList(data).sortBy(func)
 
@@ -165,8 +188,8 @@ class Test_FListGroupBy:
     def test_FList_zip(self):
         data = ['one', 'two', 'three']
         other_data = [1, 2, 3]
-        assert FList(data).zip(other_data) ==\
-            [('one', 1), ('two', 2), ('three', 3)]
+        assert FList(data).zip(other_data) == \
+               [('one', 1), ('two', 2), ('three', 3)]
 
     def test_FList_zip_minimal_length_used(self):
         data = ['one', 'two', 'three']
@@ -178,11 +201,10 @@ class Test_FListGroupBy:
         other_data = [1, 2, 3]
         assert FList(data).zip(other_data) == [('one', 1)]
 
-
     def test_zipWithIndex(self):
         data = ['one', 'two', 'three']
-        assert FList(data).zipWithIndex() ==\
-            [('one', 0), ('two', 1), ('three', 2)]
+        assert FList(data).zipWithIndex() == \
+               [('one', 0), ('two', 1), ('three', 2)]
 
     def test_zipWithIndex_empty_FList(self):
         data = []
@@ -206,7 +228,7 @@ class Test_find:
     def test_find(self):
         data = [1, 2, 3, 4, 5]
         test_data = FList(data)
-        assert test_data.find(lambda x: x == 1) is 1
+        assert test_data.find(lambda x: x == 1) == 1
         assert test_data.find(lambda x: x == 0) is None
 
     def test_find_empty(self):
@@ -234,4 +256,9 @@ class Test_distinct:
         assert FList(data).distinctBy(lambda x: x[0]) == expected_result
 
 
+class Test_countBy:
 
+    def test_countBy(self):
+        data = [1, 2, 3, 4, 5, 6, 7, 8]
+        expected_result = {True: 4, False: 4}
+        assert FList(data).countBy(lambda x: x % 2 == 0) == expected_result

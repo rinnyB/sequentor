@@ -7,7 +7,7 @@ from sequentor.flist_errors import (
     FlattenError, SortError,
     HeadError, TailError,
     InitError, LastError)
-from sequentor.helpers import require
+from sequentor.helpers import require, identity
 
 
 class FList(list):
@@ -18,6 +18,7 @@ class FList(list):
     - a list
     - a tuple
     """
+
     def __init__(self, *arr, isSorted=False):
         # arr is always a tuple
         # for example:
@@ -129,11 +130,19 @@ class FList(list):
                 new_coll.append(item)
         return new_coll
 
+    def countBy(self, func):
+        """Counts elements by func."""
+        res = {}
+        for elem in self:
+            identifier = func(elem)
+            res[identifier] = res.get(identifier, 0) + 1
+        return res
 
     def reduce(self, func):
         raise NotImplementedError
 
     '''Properties'''
+
     @property
     def head(self):
         try:
@@ -192,5 +201,4 @@ class FList(list):
 
     @property
     def distinct(self):
-        return self.distinctBy(lambda x: x)
-
+        return self.distinctBy(identity)
