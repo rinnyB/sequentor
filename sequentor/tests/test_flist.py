@@ -262,3 +262,15 @@ class Test_countBy:
         data = [1, 2, 3, 4, 5, 6, 7, 8]
         expected_result = {True: 4, False: 4}
         assert FList(data).countBy(lambda x: x % 2 == 0) == expected_result
+
+
+class Test_mkString:
+
+    def test_mkString(self):
+        data = [1, 2, 3, 4, 5]
+        expected_result = "1,2,3,4,5"
+        assert FList(data).mkString(",") == expected_result
+
+    def test_mkString_empty_string(self):
+        data = []
+        assert FList(data).mkString(",") == ""

@@ -138,6 +138,9 @@ class FList(list):
             res[identifier] = res.get(identifier, 0) + 1
         return res
 
+    def mkString(self, separator: str):
+        return separator.join(self.map(str))
+
     def reduce(self, func):
         raise NotImplementedError
 
