@@ -29,7 +29,7 @@ class FList(list):
 
         if isinstance(arr, tuple):
             if len(arr) == 1:
-                if isinstance(arr[0], (map, filter, list, tuple, chain)):
+                if isinstance(arr[0], (map, filter, list, tuple)):
                     super().__init__(arr[0])
                 else:
                     try:  # case for single element
@@ -56,8 +56,22 @@ class FList(list):
 
     def flatten(self):
         """Convert a FList of iterables to a one-dimenstional list."""
+        # based on
+        # https://docs.python.org/3/library/itertools.html#itertools.chain.from_iterable
+        def from_iterable(iterables):
+            els = []
+            for it in iterables:
+                if it is not None:
+                    for element in it:
+                        els.append(element)
+                elif it is None:
+                    pass
+                else:
+                    error_msg = "{0} is not iterable".format(it)
+                    raise FlattenError(error_msg)
+            return els
         try:
-            return FList(chain.from_iterable(self))
+            return FList(from_iterable(self))
         except Exception as e:
             raise FlattenError() from e
 
@@ -71,7 +85,7 @@ class FList(list):
     def sortBy(self, func=None):
         """Sort elements of FList using func as a key."""
         try:
-            return FList(sorted(self, key=func if func else None))
+            return FList(sorted(self, key=func))
         except Exception as e:
             raise SortError() from e
 

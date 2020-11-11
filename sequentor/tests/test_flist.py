@@ -96,6 +96,14 @@ class Test_FListFlatten:
         with pytest.raises(FlattenError):
             FList(data).flatten()
 
+    def test_FList_flatten_None(self):
+        data = [None, [1, 2, 3]]
+        assert FList(data).flatten() == [1, 2, 3]
+
+    def test_FList_flatten_None_only(self):
+        data = [None]
+        assert FList(data).flatten() == FList()
+
 
 class Test_FListFlatMap:
     def test_FList_flatMap(self):
@@ -114,6 +122,15 @@ class Test_FListFlatMap:
         # use inappropriate function
         with pytest.raises(FlatMapError):
             FList(data).flatMap(func)
+
+    def test_FList_flatMap_empty_iterator(self):
+        data = [
+            {'hello': ['world', 'sun'], 'hi': ['moon']},
+            {'hello': ["Amy", "John"]},
+            {'hi': ['there']}
+        ]
+        assert FList(data).flatMap(lambda x: x.get('hello')) == \
+               ["world", "sun", "Amy", "John"]
 
 
 class Test_FList_sorting:
