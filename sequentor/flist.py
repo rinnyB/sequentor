@@ -1,5 +1,5 @@
-from itertools import chain, groupby
-from functools import reduce as freduce
+from collections.abc import Callable, Sequence
+from typing import TypeVar
 
 from sequentor.flist_errors import (
     FListError,
@@ -7,7 +7,10 @@ from sequentor.flist_errors import (
     FlattenError, SortError,
     HeadError, TailError,
     InitError, LastError)
-from sequentor.helpers import require, identity
+from sequentor.helpers import identity
+
+A = TypeVar('A')
+B = TypeVar('B')
 
 
 class FList(list):
@@ -158,14 +161,20 @@ class FList(list):
     def reduce(self, func):
         raise NotImplementedError
 
+    def fold(self: Sequence[A], zero: B, f: Callable[[A, A], B]) -> B:
+        acc = zero
+        for a in self:
+            acc = f(a, acc)
+        return acc
+
     '''Properties'''
 
     @property
     def head(self):
-        try:
+        if self.nonEmpty:
             return self[0]
-        except Exception as e:
-            raise HeadError() from e
+        else:
+            raise HeadError()
 
     @property
     def tail(self):

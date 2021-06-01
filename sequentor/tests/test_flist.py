@@ -291,3 +291,23 @@ class Test_mkString:
     def test_mkString_empty_string(self):
         data = []
         assert FList(data).mkString(",") == ""
+
+class Test_fold:
+
+    def test_fold(self):
+        data = [1, 2, 3, 4, 5, 6]
+        expected_result = sum(data)
+        assert FList(data).fold(0, lambda a, b: a + b) == expected_result
+
+    def test_foldSingleElem(self):
+        data = [1]
+        expected_result = 1
+        assert FList(data).fold(0, lambda a, b: a + b) == expected_result
+
+    def test_foldEmpty(self):
+        data = []
+        zero = 0
+        expected_result = zero
+        assert FList(data).fold(zero, lambda a, b: a + b) == expected_result
+
+
