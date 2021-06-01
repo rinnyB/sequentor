@@ -1,3 +1,6 @@
+from typing import Any
+
+
 def isNumeric(arr):
     flag = True
     for elem in arr:
@@ -12,3 +15,7 @@ def isNumeric(arr):
 def require(statement: bool, message: str):
     if not statement:
         raise Exception(message)
+
+
+def identity(x: Any) -> Any:
+    return x
