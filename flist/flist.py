@@ -1,13 +1,13 @@
 from collections.abc import Callable, Sequence
 from typing import TypeVar
 
-from sequentor.flist_errors import (
+from flist.flist_errors import (
     FListError,
     MapError, FilterError, FlatMapError,
     FlattenError, SortError,
     HeadError, TailError,
     InitError, LastError)
-from sequentor.helpers import identity
+from flist.helpers import identity
 
 A = TypeVar('A')
 B = TypeVar('B')
@@ -29,18 +29,20 @@ class FList(list):
         # tuple((tuple),)
         # tuple(a,r,g,s, ...)
         # tuple(map,) or tuple(filter,)
-
         if isinstance(arr, tuple):
             if len(arr) == 1:
-                if isinstance(arr[0], (map, filter, list, tuple)):
+                if hasattr(arr[0], '__iter__') or isinstance(arr[0], (map, filter, list, tuple)):
                     super().__init__(arr[0])
                 else:
                     try:  # case for single element
                         super().__init__(arr)
                     except Exception as e:
                         raise FListError() from e
+            
             else:
                 super().__init__(arr)
+        else:
+            raise FListError()
         self.isSorted = isSorted
 
     def map(self, func):
