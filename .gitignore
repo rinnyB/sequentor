@@ -13,3 +13,7 @@ htmlcov/
 
 .vscode
 .idea
+
+# pip install folder
+build
+*.egg*
